@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 import QuestionCard from './components/QuestionCard';
+import 'katex/dist/katex.min.css';
 
 function App() {
   const [questions, setQuestions] = useState([]);
@@ -12,7 +13,22 @@ function App() {
       try {
         const { data, error } = await supabase
           .from('new_questions')
-          .select('*')
+          .select(`
+            id,
+            question_statement,
+            question_type,
+            options,
+            answer,
+            solution,
+            difficulty_level,
+            topic_name,
+            slot,
+            part,
+            correct_marks,
+            incorrect_marks,
+            time_minutes,
+            created_at
+          `)
           .order('created_at', { ascending: false });
 
         if (error) {
